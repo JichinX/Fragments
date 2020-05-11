@@ -1,3 +1,4 @@
+include ':utils'
 include ':fragments'
 include ':app'
 rootProject.name = "Fragments"
