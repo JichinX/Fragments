@@ -1,6 +1,7 @@
 package me.xujichang.lib.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import me.xujichang.lib.fragments.base.BaseVMFragment;
@@ -15,6 +16,8 @@ import me.xujichang.lib.fragments.databinding.FragmentMainBinding;
  */
 public class MainFragment extends BaseVMFragment<MainViewModel, FragmentMainBinding> {
 
+    private static final String TAG = "MainFragment";
+
     @Override
     protected void lazyInit() {
 
@@ -22,7 +25,7 @@ public class MainFragment extends BaseVMFragment<MainViewModel, FragmentMainBind
 
     @Override
     protected void onViewModelInit(MainViewModel pModel) {
-
+        Log.i(TAG, "onViewModelInit: " + pModel);
     }
 
     @Override

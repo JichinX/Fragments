@@ -44,9 +44,16 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
         }
         Class<VM> vVMClass = ClassUtils.getVMClass(getClass(), 0);
         if (null != vVMClass) {
-            mViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(vVMClass);
+            mViewModel = onCreateViewModelProvider().get(vVMClass);
             onViewModelInit(mViewModel);
         }
+    }
+
+    protected ViewModelProvider onCreateViewModelProvider() {
+        if (null == getAttachActivity()) {
+            return new ViewModelProvider(this);
+        }
+        return new ViewModelProvider(getAttachActivity());
     }
 
     @Override

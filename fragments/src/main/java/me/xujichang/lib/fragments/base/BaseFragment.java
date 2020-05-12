@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -19,11 +20,17 @@ import androidx.fragment.app.Fragment;
  * @author xujichang at 2020/5/9 5:47 PM
  */
 public abstract class BaseFragment extends LazyFragment {
+    private AppCompatActivity mActivity;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         initArgs(getArguments());
+        mActivity = (AppCompatActivity) context;
+    }
+
+    public AppCompatActivity getAttachActivity() {
+        return mActivity;
     }
 
     @Nullable
