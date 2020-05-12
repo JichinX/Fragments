@@ -2,6 +2,10 @@
 
 #### LazyFragment
 
+**lazyInit**
+
+
+
 #### BaseVmFragment
 
 
@@ -9,6 +13,10 @@
 #### BaseFragment
 
 **initArgs()**
+
+**initView()**
+
+**getContentLayoutRes()**
 
 
 

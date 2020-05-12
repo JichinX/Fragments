@@ -34,7 +34,7 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
         Class<VB> vVBClass = ClassUtils.getVMClass(getClass(), 1);
         if (vVBClass != null) {
             try {
-                Method vMethod = vVBClass.getMethod("inflate", View.class);
+                Method vMethod = vVBClass.getMethod("inflate", LayoutInflater.class);
                 mViewBinding = (VB) vMethod.invoke(null, getLayoutInflater());
 
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException pE) {
