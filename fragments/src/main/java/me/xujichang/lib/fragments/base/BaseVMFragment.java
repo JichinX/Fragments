@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewbinding.ViewBinding;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +44,7 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
         }
         Class<VM> vVMClass = ClassUtils.getVMClass(getClass(), 0);
         if (null != vVMClass) {
-            mViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(requireActivity().getApplication())).get(vVMClass);
+            mViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication())).get(vVMClass);
             onViewModelInit(mViewModel);
         }
     }
