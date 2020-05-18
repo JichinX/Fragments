@@ -26,15 +26,16 @@ public class MainFragment extends BaseVMFragment<MainViewModel, FragmentMainBind
     private PagedList<TestObject> mObjects;
     private TestPagedAdapter mAdapter;
     private static final String TAG = "MainFragment";
+
     @Override
     protected void lazyInit() {
-
+        Log.i(TAG, "lazyInit: ");
     }
 
     @Override
     protected void onViewModelInit(MainViewModel pModel) {
         Log.i(TAG, "onViewModelInit: " + pModel);
-        FragmentUtil.bindList(this, mAdapter, mViewModel.getObjects(),mViewModel.getStatus());
+//        FragmentUtil.bindList(this, mAdapter, mViewModel.getObjects(), mViewModel.getStatus());
     }
 
     @Override

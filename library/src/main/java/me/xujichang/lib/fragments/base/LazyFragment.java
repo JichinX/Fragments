@@ -23,16 +23,25 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tryLoadData();
+    }
+
+    private void tryLoadData() {
         if (checkInit()) {
             lazyInit();
-            isLoaded.set(true);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tryLoadData();
     }
 
     protected abstract void lazyInit();
 
     private boolean checkInit() {
-        return isLoaded.get() && isHidden() && isVisible();
+        return isLoaded.compareAndSet(false, true) && !isHidden();
     }
 
     @Override
