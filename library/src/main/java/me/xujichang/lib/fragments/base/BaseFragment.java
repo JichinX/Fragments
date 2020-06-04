@@ -38,20 +38,21 @@ public abstract class BaseFragment extends BaseStatusFragment {
 
     @Override
     protected View onCreateChildView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
-        View vView = getView();
-        if (null == vView) {
-            int layoutRes = getContentRes();
-            if (-1 != layoutRes) {
-                vView = pInflater.inflate(layoutRes, pContainerView, false);
-            } else {
-                vView = getContentView();
-            }
-            initView(vView);
+//        View vView = getView();
+//        if (null == vView) {
+        View vView;
+        int layoutRes = getContentRes();
+        if (-1 != layoutRes) {
+            vView = pInflater.inflate(layoutRes, pContainerView, false);
         } else {
-            if (null != vView.getParent()) {
-                ((ViewGroup) vView.getParent()).removeView(vView);
-            }
+            vView = getContentView();
         }
+        initView(vView);
+//        } else {
+//            if (null != vView.getParent()) {
+//                ((ViewGroup) vView.getParent()).removeView(vView);
+//            }
+//        }
         return vView;
     }
 

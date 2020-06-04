@@ -31,19 +31,27 @@ public abstract class BaseStatusFragment extends LazyFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mContainerBinding = FragmentBaseStatusContainerBinding.inflate(inflater);
-        View child = onCreateChildView(inflater, mContainerBinding.flContainer, savedInstanceState);
-        mContainerBinding.flContainer.addView(child);
-        View loadView = onCreateLoadingView(inflater, mContainerBinding.flLoading, savedInstanceState);
-        if (null != loadView) {
-            mContainerBinding.flLoading.addView(loadView);
+        View vView = getView();
+        if (null == vView) {
+            mContainerBinding = FragmentBaseStatusContainerBinding.inflate(inflater);
+            View child = onCreateChildView(inflater, mContainerBinding.flContainer, savedInstanceState);
+            mContainerBinding.flContainer.addView(child);
+            View loadView = onCreateLoadingView(inflater, mContainerBinding.flLoading, savedInstanceState);
+            if (null != loadView) {
+                mContainerBinding.flLoading.addView(loadView);
+            }
+            View errorView = onCreateErrorView(inflater, mContainerBinding.flError, savedInstanceState);
+            if (null != errorView) {
+                mContainerBinding.flError.addView(errorView);
+            }
+            mConstraintSet.clone(mContainerBinding.getRoot());
+            vView = mContainerBinding.getRoot();
+        } else {
+            if (null != vView.getParent()) {
+                ((ViewGroup) vView.getParent()).removeView(vView);
+            }
         }
-        View errorView = onCreateErrorView(inflater, mContainerBinding.flError, savedInstanceState);
-        if (null != errorView) {
-            mContainerBinding.flError.addView(errorView);
-        }
-        mConstraintSet.clone(mContainerBinding.getRoot());
-        return mContainerBinding.getRoot();
+        return vView;
     }
 
     protected abstract View onCreateChildView(LayoutInflater pInflater, ViewGroup pFlContainer, Bundle pSavedInstanceState);
