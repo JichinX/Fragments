@@ -1,6 +1,5 @@
 package me.xujichang.lib.fragments.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+
+import me.xujichang.lib.common.util.RxViews;
+import me.xujichang.lib.permissions.LivePermissions;
+import me.xujichang.lib.permissions.PermissionResult;
 
 /**
  * me.xujichang.lib.fragments.base in Fragments
@@ -19,7 +22,7 @@ import androidx.fragment.app.Fragment;
  *
  * @author xujichang at 2020/5/9 5:47 PM
  */
-public abstract class BaseFragment extends LazyFragment {
+public abstract class BaseFragment extends BaseStatusFragment {
     private AppCompatActivity mActivity;
 
     @Override
@@ -33,14 +36,13 @@ public abstract class BaseFragment extends LazyFragment {
         return mActivity;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected View onCreateChildView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
         View vView = getView();
         if (null == vView) {
             int layoutRes = getContentRes();
             if (-1 != layoutRes) {
-                vView = inflater.inflate(layoutRes, container, false);
+                vView = pInflater.inflate(layoutRes, pContainerView, false);
             } else {
                 vView = getContentView();
             }
@@ -58,7 +60,6 @@ public abstract class BaseFragment extends LazyFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     protected abstract void initView(View pView);
@@ -69,5 +70,15 @@ public abstract class BaseFragment extends LazyFragment {
 
     protected void initArgs(Bundle pArguments) {
 
+    }
+
+    public void click(View pView, View.OnClickListener pListener) {
+        RxViews.getInstance(this).click(pView, pListener);
+    }
+
+    public void withPermissions(String[] permissions, Observer<PermissionResult> pObserver) {
+        new LivePermissions(this)
+                .requestPermissions(permissions)
+                .observe(this, pObserver);
     }
 }
