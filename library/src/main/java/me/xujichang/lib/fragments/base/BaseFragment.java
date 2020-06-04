@@ -48,11 +48,6 @@ public abstract class BaseFragment extends BaseStatusFragment {
             vView = getContentView();
         }
         initView(vView);
-//        } else {
-//            if (null != vView.getParent()) {
-//                ((ViewGroup) vView.getParent()).removeView(vView);
-//            }
-//        }
         return vView;
     }
 

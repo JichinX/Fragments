@@ -35,13 +35,16 @@ public abstract class BaseStatusFragment extends LazyFragment {
         if (null == vView) {
             mContainerBinding = FragmentBaseStatusContainerBinding.inflate(inflater);
             View child = onCreateChildView(inflater, mContainerBinding.flContainer, savedInstanceState);
+            checkParent(child);
             mContainerBinding.flContainer.addView(child);
             View loadView = onCreateLoadingView(inflater, mContainerBinding.flLoading, savedInstanceState);
             if (null != loadView) {
+                checkParent(child);
                 mContainerBinding.flLoading.addView(loadView);
             }
             View errorView = onCreateErrorView(inflater, mContainerBinding.flError, savedInstanceState);
             if (null != errorView) {
+                checkParent(child);
                 mContainerBinding.flError.addView(errorView);
             }
             mConstraintSet.clone(mContainerBinding.getRoot());
@@ -52,6 +55,14 @@ public abstract class BaseStatusFragment extends LazyFragment {
             }
         }
         return vView;
+    }
+
+    private void checkParent(View pChild) {
+        if (null != pChild) {
+            if (null != pChild.getParent()) {
+                ((ViewGroup) pChild.getParent()).removeView(pChild);
+            }
+        }
     }
 
     protected abstract View onCreateChildView(LayoutInflater pInflater, ViewGroup pFlContainer, Bundle pSavedInstanceState);
