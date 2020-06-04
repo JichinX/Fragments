@@ -39,12 +39,12 @@ public abstract class BaseStatusFragment extends LazyFragment {
             mContainerBinding.flContainer.addView(child);
             View loadView = onCreateLoadingView(inflater, mContainerBinding.flLoading, savedInstanceState);
             if (null != loadView) {
-                checkParent(child);
+                checkParent(loadView);
                 mContainerBinding.flLoading.addView(loadView);
             }
             View errorView = onCreateErrorView(inflater, mContainerBinding.flError, savedInstanceState);
             if (null != errorView) {
-                checkParent(child);
+                checkParent(errorView);
                 mContainerBinding.flError.addView(errorView);
             }
             mConstraintSet.clone(mContainerBinding.getRoot());
