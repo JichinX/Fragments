@@ -22,6 +22,7 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import me.xujichang.lib.fragments.databinding.FragmentBaseStatusContainerBinding
 import me.xujichang.lib.fragments.databinding.LayoutErrorViewBinding;
 import me.xujichang.lib.fragments.databinding.LayoutLoadingViewBinding;
 
+import static androidx.constraintlayout.widget.ConstraintSet.GONE;
 import static androidx.constraintlayout.widget.ConstraintSet.INVISIBLE;
 import static androidx.constraintlayout.widget.ConstraintSet.VISIBLE;
 
@@ -41,8 +43,6 @@ import static androidx.constraintlayout.widget.ConstraintSet.VISIBLE;
 public abstract class BaseStatusFragment extends LazyFragment {
     private FragmentBaseStatusContainerBinding mContainerBinding;
     private ConstraintSet mConstraintSet = new ConstraintSet();
-    private LayoutErrorViewBinding mErrorViewBinding;
-    private LayoutLoadingViewBinding mLoadingViewBinding;
 
     @Nullable
     @Override
@@ -73,6 +73,10 @@ public abstract class BaseStatusFragment extends LazyFragment {
         return vView;
     }
 
+    protected abstract View onCreateLoadingView(LayoutInflater pInflater, FrameLayout pFlLoading, Bundle pSavedInstanceState);
+
+    protected abstract View onCreateErrorView(LayoutInflater pInflater, FrameLayout pFlError, Bundle pSavedInstanceState);
+
     private void checkParent(View pChild) {
         if (null != pChild) {
             if (null != pChild.getParent()) {
@@ -82,16 +86,6 @@ public abstract class BaseStatusFragment extends LazyFragment {
     }
 
     protected abstract View onCreateChildView(LayoutInflater pInflater, ViewGroup pFlContainer, Bundle pSavedInstanceState);
-
-    protected View onCreateErrorView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
-        mErrorViewBinding = LayoutErrorViewBinding.inflate(pInflater);
-        return mErrorViewBinding.getRoot();
-    }
-
-    protected View onCreateLoadingView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
-        mLoadingViewBinding = LayoutLoadingViewBinding.inflate(pInflater);
-        return mLoadingViewBinding.getRoot();
-    }
 
 
     protected void showError() {
@@ -112,12 +106,9 @@ public abstract class BaseStatusFragment extends LazyFragment {
         for (int index = 0; index < count; index++) {
             View child = pRoot.getChildAt(index);
             int childId = child.getId();
-            mConstraintSet.setVisibility(childId, childId == showViewId ? VISIBLE : INVISIBLE);
+            mConstraintSet.setVisibility(childId, childId == showViewId ? VISIBLE : GONE);
         }
-//        TransitionManager.beginDelayedTransition(pRoot,new Slide());
-//        TransitionManager.beginDelayedTransition(pRoot, new Visibility(){});
-//        TransitionManager.beginDelayedTransition(pRoot, new Explode());
-        TransitionManager.beginDelayedTransition(pRoot,new Fade());
+        TransitionManager.beginDelayedTransition(pRoot);
         mConstraintSet.applyTo(pRoot);
     }
 
