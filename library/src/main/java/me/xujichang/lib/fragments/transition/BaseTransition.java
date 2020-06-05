@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-package me.xujichang.lib.fragments.base;
+package me.xujichang.lib.fragments.transition;
 
 /**
- * @author xujichang on 2020/5/13.
+ *
  */
-public class ListFragment {
+public class BaseTransition {
 }

@@ -1,6 +1,23 @@
+/*
+ *    Copyright 2020 许继昌 ：xujichang@outlook.com
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package me.xujichang.lib.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +30,6 @@ import me.xujichang.lib.fragments.databinding.FragmentStatusTestBinding;
 import me.xujichang.lib.fragments.databinding.LayoutErrorViewBinding;
 import me.xujichang.lib.fragments.databinding.LayoutLoadingViewBinding;
 
-/**
- * Des:测试BaseStatusFragment的具体使用
- *
- * @author xujichang
- * Created by xujichang on 2020/6/4.
- * Copyright (c) 2020 xujichang All rights reserved.
- */
 public class StatusTestFragment extends BaseStatusFragment {
     private FragmentStatusTestBinding mTestBinding;
     private LayoutErrorViewBinding mErrorViewBinding;
@@ -46,24 +56,22 @@ public class StatusTestFragment extends BaseStatusFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTestBinding.btnError.setOnClickListener(new View.OnClickListener() {
+        mTestBinding.btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showError();
+                start();
             }
         });
-        mTestBinding.btnLoading.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void start() {
+        showLoading();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                showLoading();
-            }
-        });
-        mTestBinding.btnContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void run() {
                 showContent();
             }
-        });
+        }, 1000);
     }
 
     @Override
