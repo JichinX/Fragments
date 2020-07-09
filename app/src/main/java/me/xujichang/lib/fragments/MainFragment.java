@@ -18,8 +18,10 @@ package me.xujichang.lib.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedList;
@@ -56,6 +58,16 @@ public class MainFragment extends BaseVMFragment<MainViewModel, FragmentMainBind
 
     @Override
     protected void onBindingInit(FragmentMainBinding pBinding) {
+    }
+
+    @Override
+    protected View onCreateLoadingView(LayoutInflater pInflater, FrameLayout pFlLoading, Bundle pSavedInstanceState) {
+        return null;
+    }
+
+    @Override
+    protected View onCreateErrorView(LayoutInflater pInflater, FrameLayout pFlError, Bundle pSavedInstanceState) {
+        return null;
     }
 
     class TestObject {

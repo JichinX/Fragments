@@ -19,7 +19,9 @@ package me.xujichang.lib.fragments.base;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,7 +42,7 @@ import me.xujichang.lib.fragments.base.LazyFragment;
  *
  * @author xujichang at 2020/5/7 4:07 PM
  */
-public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBinding> extends BaseFragment {
+public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBinding> extends BaseStatusFragment {
 
     protected VM mViewModel;
     protected VB mViewBinding;
@@ -48,21 +50,27 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Class<VB> vVBClass = ClassUtils.getVMClass(getClass(), 1);
-        if (vVBClass != null) {
-            try {
-                Method vMethod = vVBClass.getMethod("inflate", LayoutInflater.class);
-                mViewBinding = (VB) vMethod.invoke(null, getLayoutInflater());
 
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException pE) {
-                pE.printStackTrace();
-            }
-        }
         Class<VM> vVMClass = ClassUtils.getVMClass(getClass(), 0);
         if (null != vVMClass) {
             mViewModel = onCreateViewModelProvider().get(vVMClass);
             onViewModelInit(mViewModel);
         }
+    }
+
+    @Override
+    protected View onCreateChildView(LayoutInflater pInflater, ViewGroup pFlContainer, Bundle pSavedInstanceState) {
+        Class<VB> vVBClass = ClassUtils.getVMClass(getClass(), 1);
+        if (vVBClass != null) {
+            try {
+                Method vMethod = vVBClass.getMethod("inflate", LayoutInflater.class, ViewGroup.class, boolean.class);
+                mViewBinding = (VB) vMethod.invoke(null, pInflater, pFlContainer, false);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException pE) {
+                pE.printStackTrace();
+            }
+        }
+        onBindingInit(mViewBinding);
+        return mViewBinding.getRoot();
     }
 
     protected ViewModelProvider onCreateViewModelProvider() {
@@ -73,10 +81,14 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
     }
 
     @Override
-    protected void initView(View pView) {
-        if (mViewBinding != null) {
-            onBindingInit(mViewBinding);
-        }
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewBinding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author xujichang at 2020/5/7 4:07 PM
  */
 public abstract class LazyFragment extends Fragment {
-    private AtomicBoolean isLoaded = new AtomicBoolean(false);
+    private final AtomicBoolean isLoaded = new AtomicBoolean(false);
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

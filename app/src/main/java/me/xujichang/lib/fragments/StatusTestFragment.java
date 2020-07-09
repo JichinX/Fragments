@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,21 +37,26 @@ public class StatusTestFragment extends BaseStatusFragment {
     private LayoutLoadingViewBinding mLoadingViewBinding;
 
     @Override
-    protected View onCreateErrorView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
-        mErrorViewBinding = LayoutErrorViewBinding.inflate(pInflater);
-        return mErrorViewBinding.getRoot();
+    protected View onCreateLoadingView(LayoutInflater pInflater, FrameLayout pFlLoading, Bundle pSavedInstanceState) {
+        mLoadingViewBinding = LayoutLoadingViewBinding.inflate(pInflater);
+        return mLoadingViewBinding.getRoot();
     }
 
     @Override
-    protected View onCreateLoadingView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
-        mLoadingViewBinding = LayoutLoadingViewBinding.inflate(pInflater);
-        return mLoadingViewBinding.getRoot();
+    protected View onCreateErrorView(LayoutInflater pInflater, FrameLayout pFlError, Bundle pSavedInstanceState) {
+        mErrorViewBinding = LayoutErrorViewBinding.inflate(pInflater);
+        return mErrorViewBinding.getRoot();
     }
 
     @Override
     protected View onCreateChildView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
         mTestBinding = FragmentStatusTestBinding.inflate(pInflater);
         return mTestBinding.getRoot();
+    }
+
+    @Override
+    protected View getContentView() {
+        return null;
     }
 
     @Override

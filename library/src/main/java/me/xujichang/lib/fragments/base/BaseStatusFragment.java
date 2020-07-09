@@ -17,7 +17,6 @@
 package me.xujichang.lib.fragments.base;
 
 import android.os.Bundle;
-import android.transition.Fade;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,60 +29,48 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import me.xujichang.lib.fragments.databinding.FragmentBaseStatusContainerBinding;
-import me.xujichang.lib.fragments.databinding.LayoutErrorViewBinding;
-import me.xujichang.lib.fragments.databinding.LayoutLoadingViewBinding;
 
 import static androidx.constraintlayout.widget.ConstraintSet.GONE;
-import static androidx.constraintlayout.widget.ConstraintSet.INVISIBLE;
 import static androidx.constraintlayout.widget.ConstraintSet.VISIBLE;
 
 /**
  * @author xujichang on 2020/5/13.
  */
-public abstract class BaseStatusFragment extends LazyFragment {
+public abstract class BaseStatusFragment extends BaseFragment {
     private FragmentBaseStatusContainerBinding mContainerBinding;
-    private ConstraintSet mConstraintSet = new ConstraintSet();
+    private final ConstraintSet mConstraintSet = new ConstraintSet();
+    private View mBaseView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View vView = getView();
-        if (null == vView) {
-            mContainerBinding = FragmentBaseStatusContainerBinding.inflate(inflater);
+        if (null == mBaseView) {
+            mContainerBinding = FragmentBaseStatusContainerBinding.inflate(inflater, container, false);
             View child = onCreateChildView(inflater, mContainerBinding.flContainer, savedInstanceState);
-            checkParent(child);
+            checkOrDetachParent(child);
             mContainerBinding.flContainer.addView(child);
             View loadView = onCreateLoadingView(inflater, mContainerBinding.flLoading, savedInstanceState);
             if (null != loadView) {
-                checkParent(loadView);
+                checkOrDetachParent(loadView);
                 mContainerBinding.flLoading.addView(loadView);
             }
             View errorView = onCreateErrorView(inflater, mContainerBinding.flError, savedInstanceState);
             if (null != errorView) {
-                checkParent(errorView);
+                checkOrDetachParent(errorView);
                 mContainerBinding.flError.addView(errorView);
             }
             mConstraintSet.clone(mContainerBinding.getRoot());
-            vView = mContainerBinding.getRoot();
+            mBaseView = mContainerBinding.getRoot();
         } else {
-            if (null != vView.getParent()) {
-                ((ViewGroup) vView.getParent()).removeView(vView);
-            }
+            checkOrDetachParent(mBaseView);
         }
-        return vView;
+        return mBaseView;
     }
 
     protected abstract View onCreateLoadingView(LayoutInflater pInflater, FrameLayout pFlLoading, Bundle pSavedInstanceState);
 
     protected abstract View onCreateErrorView(LayoutInflater pInflater, FrameLayout pFlError, Bundle pSavedInstanceState);
 
-    private void checkParent(View pChild) {
-        if (null != pChild) {
-            if (null != pChild.getParent()) {
-                ((ViewGroup) pChild.getParent()).removeView(pChild);
-            }
-        }
-    }
 
     protected abstract View onCreateChildView(LayoutInflater pInflater, ViewGroup pFlContainer, Bundle pSavedInstanceState);
 
@@ -112,4 +99,10 @@ public abstract class BaseStatusFragment extends LazyFragment {
         mConstraintSet.applyTo(pRoot);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBaseView = null;
+        mContainerBinding = null;
+    }
 }

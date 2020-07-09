@@ -26,6 +26,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.viewbinding.ViewBinding;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import me.xujichang.lib.common.util.RxViews;
 import me.xujichang.lib.permissions.LivePermissions;
@@ -38,8 +43,10 @@ import me.xujichang.lib.permissions.PermissionResult;
  *
  * @author xujichang at 2020/5/9 5:47 PM
  */
-public abstract class BaseFragment extends BaseStatusFragment {
+public abstract class BaseFragment extends LazyFragment {
     private AppCompatActivity mActivity;
+    //    private View mRootView;
+//    private final List<ViewBinding> mBindings = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,21 +59,23 @@ public abstract class BaseFragment extends BaseStatusFragment {
         return mActivity;
     }
 
-    @Override
-    protected View onCreateChildView(LayoutInflater pInflater, ViewGroup pContainerView, Bundle pSavedInstanceState) {
-//        View vView = getView();
-//        if (null == vView) {
-        View vView;
-        int layoutRes = getContentRes();
-        if (-1 != layoutRes) {
-            vView = pInflater.inflate(layoutRes, pContainerView, false);
-        } else {
-            vView = getContentView();
-        }
-        initView(vView);
-        return vView;
-    }
-
+    //    @Nullable
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        if (null == mRootView) {
+//            int layoutRes = getContentRes();
+//            if (-1 != layoutRes) {
+//                mRootView = inflater.inflate(layoutRes, container, false);
+//            } else {
+//                mRootView = getContentView();
+//            }
+//        } else {
+//            checkOrDetachParent(mRootView);
+//        }
+//        initView(mRootView);
+//        return mRootView;
+//    }
+    @Deprecated
     protected abstract View getContentView();
 
     @Override
@@ -74,23 +83,49 @@ public abstract class BaseFragment extends BaseStatusFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    protected abstract void initView(View pView);
-
-    protected int getContentRes() {
-        return -1;
-    }
+//
+//    protected int getContentRes() {
+//        return -1;
+//    }
 
     protected void initArgs(Bundle pArguments) {
 
     }
 
+    protected void checkOrDetachParent(View pChild) {
+        if (null != pChild) {
+            if (null != pChild.getParent()) {
+                ((ViewGroup) pChild.getParent()).removeView(pChild);
+            }
+        }
+    }
+
     public void click(View pView, View.OnClickListener pListener) {
-        RxViews.getInstance(this).click(pView, pListener);
+        RxViews.getInstance(getViewLifecycleOwner()).click(pView, pListener);
     }
 
     public void withPermissions(String[] permissions, Observer<PermissionResult> pObserver) {
         new LivePermissions(this)
                 .requestPermissions(permissions)
                 .observe(this, pObserver);
+    }
+
+//    protected void addBinding(ViewBinding pViewBinding) {
+////        mBindings.add(pViewBinding);
+//    }
+
+    @Override
+    public void onDestroyView() {
+//        releaseBindings();
+        super.onDestroyView();
+    }
+
+    private void releaseBindings() {
+//        Iterator<ViewBinding> vIterator = mBindings.iterator();
+//        if (vIterator.hasNext()) {
+//            ViewBinding vBinding = vIterator.next();
+//            vBinding = null;
+//            vIterator.remove();
+//        }
     }
 }
