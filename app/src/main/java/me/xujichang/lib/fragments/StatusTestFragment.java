@@ -81,7 +81,7 @@ public class StatusTestFragment extends BaseStatusFragment {
     }
 
     @Override
-    protected void lazyInit() {
+    public void onDataInit() {
 
     }
 }

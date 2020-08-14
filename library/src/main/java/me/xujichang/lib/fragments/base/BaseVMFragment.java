@@ -21,8 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -48,15 +50,22 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
     protected VB mViewBinding;
 
     @Override
+    @CallSuper
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Class<VM> vVMClass = ClassUtils.getVMClass(getClass(), 0);
         if (null != vVMClass) {
             mViewModel = onCreateViewModelProvider().get(vVMClass);
-            onViewModelInit(mViewModel);
         }
     }
+
+    @Override
+    @CallSuper
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        onViewModelInit(mViewModel);
+    }
+
 
     @Override
     protected View onCreateChildView(LayoutInflater pInflater, ViewGroup pFlContainer, Bundle pSavedInstanceState) {
@@ -85,18 +94,17 @@ public abstract class BaseVMFragment<VM extends ViewModel, VB extends ViewBindin
         super.onDestroyView();
         mViewBinding = null;
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     @Override
     protected View getContentView() {
         return mViewBinding.getRoot();
     }
 
-    protected abstract void onViewModelInit(VM pModel);
+    @Deprecated
+    protected void onViewModelInit(VM pModel) {
+        onViewModelInit(pModel, getViewLifecycleOwner());
+    }
+
+    protected abstract void onViewModelInit(VM pViewModel, LifecycleOwner pViewLifecycleOwner);
 
     protected abstract void onBindingInit(VB pBinding);
 }

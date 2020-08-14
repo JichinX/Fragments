@@ -23,7 +23,8 @@ import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import me.xujichang.lib.common.base.ListStatus;
+import me.xujichang.lib.common.status.ListStatus;
+
 
 /**
  * @author xujichang on 2020/5/13.

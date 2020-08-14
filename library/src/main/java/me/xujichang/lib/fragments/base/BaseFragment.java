@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import me.xujichang.lib.common.util.RxViews;
+import me.xujichang.lib.common.rx.RxViews;
 import me.xujichang.lib.permissions.LivePermissions;
 import me.xujichang.lib.permissions.PermissionResult;
 
@@ -77,16 +77,6 @@ public abstract class BaseFragment extends LazyFragment {
 //    }
     @Deprecated
     protected abstract View getContentView();
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-//
-//    protected int getContentRes() {
-//        return -1;
-//    }
 
     protected void initArgs(Bundle pArguments) {
 

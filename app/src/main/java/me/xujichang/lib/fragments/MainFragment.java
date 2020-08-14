@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
@@ -31,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import me.xujichang.lib.fragments.base.BaseVMFragment;
 import me.xujichang.lib.fragments.databinding.FragmentMainBinding;
-import me.xujichang.lib.fragments.util.FragmentUtil;
 
 /**
  * me.xujichang.lib.fragments in Fragments
@@ -46,14 +46,24 @@ public class MainFragment extends BaseVMFragment<MainViewModel, FragmentMainBind
     private static final String TAG = "MainFragment";
 
     @Override
-    protected void lazyInit() {
+    public void onDataInit() {
         Log.i(TAG, "lazyInit: ");
+    }
+
+    @Override
+    protected void lazyInit() {
+
     }
 
     @Override
     protected void onViewModelInit(MainViewModel pModel) {
         Log.i(TAG, "onViewModelInit: " + pModel);
 //        FragmentUtil.bindList(this, mAdapter, mViewModel.getObjects(), mViewModel.getStatus());
+    }
+
+    @Override
+    protected void onViewModelInit(MainViewModel pViewModel, LifecycleOwner pViewLifecycleOwner) {
+
     }
 
     @Override

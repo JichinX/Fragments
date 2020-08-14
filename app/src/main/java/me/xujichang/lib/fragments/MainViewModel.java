@@ -23,7 +23,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.paging.PagedList;
 
-import me.xujichang.lib.common.base.ListStatus;
+import me.xujichang.lib.common.status.ListStatus;
 
 
 /**
