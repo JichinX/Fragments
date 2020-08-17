@@ -52,54 +52,54 @@ dependencies {
     implementation 'com.github.xujichang:Permissions:1.0.0-beta01'
     implementation 'com.github.xujichang:Common:1.0.1-beta.2'
 }
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-//artifacts {
-//    archives javadocJar
-//    archives sourcesJar
+//
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
 //}
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            local(MavenPublication) {
-                // Applies the component for the release build variant.
-                from components.release
-                artifact sourcesJar
-                artifact javadocJar
-
-                // You can then customize attributes of the publication as shown below.
-                groupId = 'com.github.xujichang'
-                artifactId = rootProject.name
-                version = '1.0.0-beta01'
-            }
-            // Creates a Maven publication called “debug”.
-//            jcenter(MavenPublication) {
-//                // Applies the component for the debug build variant.
+//
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//}
+//
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+////artifacts {
+////    archives javadocJar
+////    archives sourcesJar
+////}
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            // Creates a Maven publication called "release".
+//            local(MavenPublication) {
+//                // Applies the component for the release build variant.
 //                from components.release
+//                artifact sourcesJar
+//                artifact javadocJar
+//
+//                // You can then customize attributes of the publication as shown below.
 //                groupId = 'com.github.xujichang'
 //                artifactId = rootProject.name
-//                version = '1.0'
+//                version = '1.0.0-beta01'
 //            }
-        }
-//        repositories {
-//            maven {
-//                // change to point to your repo, e.g. http://my.org/repo
-//                url = "$buildDir/repo"
-//            }
+//            // Creates a Maven publication called “debug”.
+////            jcenter(MavenPublication) {
+////                // Applies the component for the debug build variant.
+////                from components.release
+////                groupId = 'com.github.xujichang'
+////                artifactId = rootProject.name
+////                version = '1.0'
+////            }
 //        }
-    }
-}
+////        repositories {
+////            maven {
+////                // change to point to your repo, e.g. http://my.org/repo
+////                url = "$buildDir/repo"
+////            }
+////        }
+//    }
+//}
