@@ -17,7 +17,7 @@ allprojects {
     repositories {
         //自用
         mavenLocal()
-        maven { url "https://mirrors.huaweicloud.com/repository/maven/" }
+//        maven { url "https://mirrors.huaweicloud.com/repository/maven/" }
         maven { url "https://jitpack.io" }
         google()
         jcenter()
